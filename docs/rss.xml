@@ -1,5 +1,45 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Blog Title</title><link>https://idontknowoman.github.io/fang.github.io</link><description>Blog description</description><copyright>Blog Title</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://idontknowoman.github.io/fang.github.io</link></image><lastBuildDate>Wed, 04 Dec 2024 09:43:49 +0000</lastBuildDate><managingEditor>Blog Title</managingEditor><ttl>60</ttl><webMaster>Blog Title</webMaster><item><title>Tiny Project: Calculator</title><link>https://idontknowoman.github.io/fang.github.io/post/Tiny%20Project-%20Calculator.html</link><description>### 用C++实现一个简易计算器，实现加减乘除计算的基本功能&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Blog Title</title><link>https://idontknowoman.github.io/fang.github.io</link><description>Blog description</description><copyright>Blog Title</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://idontknowoman.github.io/fang.github.io</link></image><lastBuildDate>Wed, 04 Dec 2024 11:04:43 +0000</lastBuildDate><managingEditor>Blog Title</managingEditor><ttl>60</ttl><webMaster>Blog Title</webMaster><item><title>C++实现一个简易计算器</title><link>https://idontknowoman.github.io/fang.github.io/post/C%2B%2B-shi-xian-yi-ge-jian-yi-ji-suan-qi.html</link><description>用C++实现一个简易计算器，实现小数的加减乘除计算的基本功能
+#### 考察知识点：
+- 输入输出
+- 栈
+- 异常处理
+- 类型转换
+- 函数传参
+
+#### 功能实现：
+- 中缀表达式转后缀表达式
+- 后缀表达式计算
+
+#### 中缀表达式转后缀表达式
+首先获取输入的中缀表达式字符串，实现以下到后缀表达式的转换，如：
+`3 + 5 * 10 ——&gt; 3 5 10 * +`
+那么这里需要准备一个栈，控制操作符的进出顺序，操作数的顺序没有改变，直接保留即可
+流程：
+1. 定义一个指针，遍历中缀表达式字符串，遇到操作数，直接添加到结果
+2. 遇到操作符，则判断情况，优先级大的操作符直接进栈
+    1. 操作符为'(' or '*' or '\'：直接进栈（`stack.push(op)`）
+    2. 操作符为'+' or '-': 一直出栈（`stack.pop()`），加入结果中的后缀表达式，直到栈顶（`stack.top()`）元素的操作符优先级不高于当前op
+    3. 操作符为')'：一直出栈，，加入结果中的后缀表达式，直到栈顶元素为'('，出栈，不加入结果
+3. 遍历结束，弹出所有栈中元素（循环终止条件`stack.empty()`）
+
+#### 后缀表达式的计算
+维护一个操作数栈，
+流程：
+1. 定义一个指针，从左至右依次读取后缀表达式的元素，遇到操作数就进栈
+2. 遇到操作符就计算（`switch-case`加减乘除四种情况），将栈顶两元素的值计算后重新压栈
+
+
+#### 异常处理
+**除0异常**:自定义异常`throw std::invalid_argument('Division by zero')`，需包含`&lt;stdexcept&gt;`头文件
+
+#### 类型转换
+- `char`转`int`: `int(ch-'0')`即可
+- `int`转`double`: 直接强制类型转换
+
+#### 函数传参
+- 传值: 函数内部对参数的修改不会影响外部
+- 传址: 函数参数中携带&amp;标识，标识传值，函数对该参数的修改是全局的。</description><guid isPermaLink="true">https://idontknowoman.github.io/fang.github.io/post/C%2B%2B-shi-xian-yi-ge-jian-yi-ji-suan-qi.html</guid><pubDate>Wed, 04 Dec 2024 11:04:17 +0000</pubDate></item><item><title>Tiny Project: Calculator</title><link>https://idontknowoman.github.io/fang.github.io/post/Tiny%20Project-%20Calculator.html</link><description>### 用C++实现一个简易计算器，实现加减乘除计算的基本功能&#13;
 #### 考察知识点：&#13;
 - 输入输出&#13;
 - 栈&#13;
