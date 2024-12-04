@@ -1,45 +1,189 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Blog Title</title><link>https://idontknowoman.github.io/fang.github.io</link><description>Blog description</description><copyright>Blog Title</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://idontknowoman.github.io/fang.github.io</link></image><lastBuildDate>Wed, 04 Dec 2024 11:04:43 +0000</lastBuildDate><managingEditor>Blog Title</managingEditor><ttl>60</ttl><webMaster>Blog Title</webMaster><item><title>C++实现一个简易计算器</title><link>https://idontknowoman.github.io/fang.github.io/post/C%2B%2B-shi-xian-yi-ge-jian-yi-ji-suan-qi.html</link><description>用C++实现一个简易计算器，实现小数的加减乘除计算的基本功能
-#### 考察知识点：
-- 输入输出
-- 栈
-- 异常处理
-- 类型转换
-- 函数传参
-
-#### 功能实现：
-- 中缀表达式转后缀表达式
-- 后缀表达式计算
-
-#### 中缀表达式转后缀表达式
-首先获取输入的中缀表达式字符串，实现以下到后缀表达式的转换，如：
-`3 + 5 * 10 ——&gt; 3 5 10 * +`
-那么这里需要准备一个栈，控制操作符的进出顺序，操作数的顺序没有改变，直接保留即可
-流程：
-1. 定义一个指针，遍历中缀表达式字符串，遇到操作数，直接添加到结果
-2. 遇到操作符，则判断情况，优先级大的操作符直接进栈
-    1. 操作符为'(' or '*' or '\'：直接进栈（`stack.push(op)`）
-    2. 操作符为'+' or '-': 一直出栈（`stack.pop()`），加入结果中的后缀表达式，直到栈顶（`stack.top()`）元素的操作符优先级不高于当前op
-    3. 操作符为')'：一直出栈，，加入结果中的后缀表达式，直到栈顶元素为'('，出栈，不加入结果
-3. 遍历结束，弹出所有栈中元素（循环终止条件`stack.empty()`）
-
-#### 后缀表达式的计算
-维护一个操作数栈，
-流程：
-1. 定义一个指针，从左至右依次读取后缀表达式的元素，遇到操作数就进栈
-2. 遇到操作符就计算（`switch-case`加减乘除四种情况），将栈顶两元素的值计算后重新压栈
-
-
-#### 异常处理
-**除0异常**:自定义异常`throw std::invalid_argument('Division by zero')`，需包含`&lt;stdexcept&gt;`头文件
-
-#### 类型转换
-- `char`转`int`: `int(ch-'0')`即可
-- `int`转`double`: 直接强制类型转换
-
-#### 函数传参
-- 传值: 函数内部对参数的修改不会影响外部
-- 传址: 函数参数中携带&amp;标识，标识传值，函数对该参数的修改是全局的。</description><guid isPermaLink="true">https://idontknowoman.github.io/fang.github.io/post/C%2B%2B-shi-xian-yi-ge-jian-yi-ji-suan-qi.html</guid><pubDate>Wed, 04 Dec 2024 11:04:17 +0000</pubDate></item><item><title>Tiny Project: Calculator</title><link>https://idontknowoman.github.io/fang.github.io/post/Tiny%20Project-%20Calculator.html</link><description>### 用C++实现一个简易计算器，实现加减乘除计算的基本功能&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Blog Title</title><link>https://idontknowoman.github.io/fang.github.io</link><description>Blog description</description><copyright>Blog Title</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://idontknowoman.github.io/fang.github.io</link></image><lastBuildDate>Wed, 04 Dec 2024 11:14:20 +0000</lastBuildDate><managingEditor>Blog Title</managingEditor><ttl>60</ttl><webMaster>Blog Title</webMaster><item><title>C++实现一个简易计算器</title><link>https://idontknowoman.github.io/fang.github.io/post/C%2B%2B-shi-xian-yi-ge-jian-yi-ji-suan-qi.html</link><description>用C++实现一个简易计算器，实现小数的加减乘除计算的基本功能&#13;
+#### 考察知识点：&#13;
+- 输入输出&#13;
+- 栈&#13;
+- 异常处理&#13;
+- 类型转换&#13;
+- 函数传参&#13;
+&#13;
+#### 功能实现：&#13;
+- 中缀表达式转后缀表达式&#13;
+- 后缀表达式计算&#13;
+&#13;
+#### 中缀表达式转后缀表达式&#13;
+首先获取输入的中缀表达式字符串，实现以下到后缀表达式的转换，如：&#13;
+`3 + 5 * 10 ——&gt; 3 5 10 * +`&#13;
+那么这里需要准备一个栈，控制操作符的进出顺序，操作数的顺序没有改变，直接保留即可&#13;
+流程：&#13;
+1. 定义一个指针，遍历中缀表达式字符串，遇到操作数，直接添加到结果&#13;
+2. 遇到操作符，则判断情况，优先级大的操作符直接进栈&#13;
+    1. 操作符为'(' or '*' or '\'：直接进栈（`stack.push(op)`）&#13;
+    2. 操作符为'+' or '-': 一直出栈（`stack.pop()`），加入结果中的后缀表达式，直到栈顶（`stack.top()`）元素的操作符优先级不高于当前op&#13;
+    3. 操作符为')'：一直出栈，，加入结果中的后缀表达式，直到栈顶元素为'('，出栈，不加入结果&#13;
+3. 遍历结束，弹出所有栈中元素（循环终止条件`stack.empty()`）&#13;
+&#13;
+#### 后缀表达式的计算&#13;
+维护一个操作数栈，&#13;
+流程：&#13;
+1. 定义一个指针，从左至右依次读取后缀表达式的元素，遇到操作数就进栈&#13;
+2. 遇到操作符就计算（`switch-case`加减乘除四种情况），将栈顶两元素的值计算后重新压栈&#13;
+&#13;
+&#13;
+#### 异常处理&#13;
+**除0异常**:自定义异常`throw std::invalid_argument('Division by zero')`，需包含`&lt;stdexcept&gt;`头文件&#13;
+&#13;
+#### 类型转换&#13;
+- `char`转`int`: `int(ch-'0')`即可&#13;
+- `int`转`double`: 直接强制类型转换&#13;
+&#13;
+#### 函数传参&#13;
+- 传值: 函数内部对参数的修改不会影响外部&#13;
+- 传址: 函数参数中携带&amp;标识，标识传值，函数对该参数的修改是全局的&#13;
+&#13;
+```&#13;
+#include&lt;iostream&gt;&#13;
+#include &lt;stack&gt;&#13;
+#include &lt;cmath&gt;&#13;
+#include &lt;iomanip&gt;&#13;
+#include &lt;sstream&gt;&#13;
+using namespace std;&#13;
+&#13;
+std::string double_to_string(double value) {&#13;
+    // 使用ostringstream创建字符串流&#13;
+    ostringstream out;&#13;
+    // 设置fixed格式以避免科学计数法&#13;
+    out &lt;&lt; fixed &lt;&lt; setprecision(10) &lt;&lt; value; // 设置足够多的小数位，之后再处理&#13;
+    std::string result = out.str();&#13;
+    // 查找最后一个小数点的位置&#13;
+    size_t pos = result.find('.');&#13;
+    if (pos != string::npos) {&#13;
+        // 去除小数点后无效的0&#13;
+        result.erase(result.find_last_not_of('0') + 1, string::npos);&#13;
+        // 如果小数点是最后一个字符，去掉小数点&#13;
+        if (result.back() == '.') {&#13;
+            result.pop_back();&#13;
+        }&#13;
+    }&#13;
+    return result;&#13;
+}&#13;
+&#13;
+double getnum(string&amp; input, int&amp; i) {&#13;
+    int num = int(input[i] - '0');&#13;
+    i++;&#13;
+    while (i &lt; input.length() &amp;&amp; isdigit(input[i])) {&#13;
+        num = num * 10 + int(input[i] - '0');&#13;
+        i++;&#13;
+    }&#13;
+    double xiaoshu = 0;&#13;
+    int index = 1;&#13;
+    if (input[i] == '.') {&#13;
+        i++;&#13;
+        while (i &lt; input.length() &amp;&amp; isdigit(input[i])) {&#13;
+            xiaoshu += (input[i] - '0') * pow(0.1, index);&#13;
+            i++;&#13;
+        }&#13;
+    }&#13;
+    double operand = num + xiaoshu;&#13;
+    return operand;&#13;
+}&#13;
+&#13;
+// 中缀表达式转后缀表达式&#13;
+string infix_to_postfix(string&amp; input) {&#13;
+    string output = '';&#13;
+    stack&lt;char&gt; operators;&#13;
+    // 3 + 5 * 10 ——&gt; 3 5 10 * +&#13;
+    for (int i = 0; i &lt; input.length(); i++) {&#13;
+        char c = input[i];&#13;
+        if (isdigit(c)) {&#13;
+            double operand = getnum(input, i);&#13;
+            output += double_to_string(operand) + ' ';&#13;
+            c = input[i];&#13;
+        }&#13;
+        if (c == '(' || c == '*' || c == '/') {&#13;
+            operators.push(c);&#13;
+        } else if (c == ')') {&#13;
+            while (!operators.empty() &amp;&amp; operators.top() != '(') {&#13;
+                output += string(1, operators.top()) + ' ';&#13;
+                operators.pop();&#13;
+            }&#13;
+            if (!operators.empty() &amp;&amp; operators.top() == '(') {&#13;
+                operators.pop();&#13;
+            }&#13;
+        } else if (c == '+' || c == '-') {&#13;
+            while (!operators.empty() &amp;&amp; operators.top() != '(' &amp;&amp; (operators.top() == '*' || operators.top() == '/')) {&#13;
+                output += string(1, operators.top()) + ' ';&#13;
+                operators.pop();&#13;
+            }&#13;
+            operators.push(c);&#13;
+        }&#13;
+    }&#13;
+    while (!operators.empty()) {&#13;
+        output += string(1, operators.top()) + ' ';&#13;
+        operators.pop();&#13;
+    }&#13;
+    return output;&#13;
+}&#13;
+&#13;
+double calc(string&amp; postfix_expression) {&#13;
+    stack&lt;double&gt; operands;&#13;
+    for (int i = 0; i &lt; postfix_expression.length(); i++) {&#13;
+        char c = postfix_expression[i];&#13;
+        if (isdigit(c)) {&#13;
+            double operand = getnum(postfix_expression, i);&#13;
+            operands.push(operand);&#13;
+            c = postfix_expression[i];&#13;
+        }&#13;
+        double op1, op2;&#13;
+        if (c == '+' || c == '-' || c == '*' || c == '/') {&#13;
+            op1 = operands.top();&#13;
+            operands.pop();&#13;
+            op2 = operands.top();&#13;
+            operands.pop();&#13;
+        } else {&#13;
+            continue;&#13;
+        }&#13;
+        switch (c) {&#13;
+            case '+':&#13;
+                operands.push(op1 + op2);&#13;
+                break;&#13;
+            case '-':&#13;
+                operands.push(op1 - op2);&#13;
+                break;&#13;
+            case '*':&#13;
+                operands.push(op1 * op2);&#13;
+                break;&#13;
+            case '/': {&#13;
+                if (op2 == 0) {&#13;
+                    cout &lt;&lt; 'Error: division by zero' &lt;&lt; endl;&#13;
+                    return 0;&#13;
+                }&#13;
+                operands.push(op1 / op2);&#13;
+                break;&#13;
+            }&#13;
+        }&#13;
+    }&#13;
+    return operands.top();&#13;
+}&#13;
+&#13;
+// 实现一个计算器&#13;
+int main() {&#13;
+    string input;&#13;
+    while (true) {&#13;
+        cout &lt;&lt; 'Enter an expression: ' &lt;&lt; endl;&#13;
+        getline(cin, input);&#13;
+        if (input == 'exit') {&#13;
+            break;&#13;
+        }&#13;
+        string new_expression = infix_to_postfix(input);&#13;
+        // 打印一下中间结果：后缀表达式&#13;
+        cout &lt;&lt; 'Postfix expression: ' &lt;&lt; new_expression &lt;&lt; endl;&#13;
+        // 根据后缀表达式计算结果&#13;
+        double result = calc(new_expression);&#13;
+        cout &lt;&lt; 'Result: ' &lt;&lt; result &lt;&lt; endl;&#13;
+    }&#13;
+}&#13;
+```。</description><guid isPermaLink="true">https://idontknowoman.github.io/fang.github.io/post/C%2B%2B-shi-xian-yi-ge-jian-yi-ji-suan-qi.html</guid><pubDate>Wed, 04 Dec 2024 11:04:17 +0000</pubDate></item><item><title>Tiny Project: Calculator</title><link>https://idontknowoman.github.io/fang.github.io/post/Tiny%20Project-%20Calculator.html</link><description>### 用C++实现一个简易计算器，实现加减乘除计算的基本功能&#13;
 #### 考察知识点：&#13;
 - 输入输出&#13;
 - 栈&#13;
