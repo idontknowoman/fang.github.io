@@ -1,5 +1,610 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Blog Title</title><link>https://idontknowoman.github.io/fang.github.io</link><description>Blog description</description><copyright>Blog Title</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://idontknowoman.github.io/fang.github.io</link></image><lastBuildDate>Wed, 04 Dec 2024 16:13:15 +0000</lastBuildDate><managingEditor>Blog Title</managingEditor><ttl>60</ttl><webMaster>Blog Title</webMaster><item><title>C++实现一个简易计算器</title><link>https://idontknowoman.github.io/fang.github.io/post/C%2B%2B-shi-xian-yi-ge-jian-yi-ji-suan-qi.html</link><description>用C++实现一个简易计算器，实现小数的加减乘除计算的基本功能&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Blog Title</title><link>https://idontknowoman.github.io/fang.github.io</link><description>Blog description</description><copyright>Blog Title</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://idontknowoman.github.io/fang.github.io</link></image><lastBuildDate>Fri, 13 Dec 2024 05:48:33 +0000</lastBuildDate><managingEditor>Blog Title</managingEditor><ttl>60</ttl><webMaster>Blog Title</webMaster><item><title>C++实现通讯录管理系统</title><link>https://idontknowoman.github.io/fang.github.io/post/C%2B%2B-shi-xian-tong-xun-lu-guan-li-xi-tong.html</link><description>用C++实现一个通讯录管理系统，实现以下功能:
+
+1. 创建通讯录(包括姓名,性别,年龄,联系电话,家庭住址)
+
+2. 显示通讯录(显示通讯录成员的基本信息)
+
+3. 删除通讯录(删除通讯录中想删除的联系人)
+
+4. 查找通讯录(按照联系人的名字查找到具体的联系人)
+
+5. 修改通讯录(修改通讯录中联系人的基本信息)
+
+6. 清空通讯录(删除通讯录中的所有联系人)
+
+7. 退出通讯录(退出通讯录界面)
+
+
+
+#### 考察知识点：
+
+- struct结构体——定义、构造、初始化
+- 枚举类型
+- switch-case
+- 数组操作
+- 链表操作
+
+#### 功能实现：
+
+- 查询界面展示
+- 增删查改
+
+
+
+#### struct结构体
+
+- struct结构体的定义
+
+  - 代码如下：
+
+    - ```c++
+      struct Person {
+          string name;
+          Sex sex; // male or female
+          int age;
+          string phoneNumber;
+          string address;
+      
+          Person() : name(''), sex(FEMALE), age(0), phoneNumber(''), address('') {};
+          Person(string n, Sex s, int a, string pN, string addr) : name(n), sex(s), age(a), phoneNumber(pN), address(addr) {};
+      };
+      ```
+
+    - 包含属性声明、方法声明、构造方法声明
+
+    - struct与C++中类的区别
+
+      - struct声明的结构体中的变量和方法的访问符都是public
+
+  - 与C的不同
+
+    - C在声明结构体时必须带struct，而C++中可以省略struct，这也是C中的结构体定义常使用typedef取别名的原因
+
+  - 起别名方式
+
+    - typedef（沿用C）
+
+      - ```c++
+        typedef struct Person {
+            string name;
+            Sex sex; // male or female
+            int age;
+            string phoneNumber;
+            string address;
+        
+            Person() : name(''), sex(FEMALE), age(0), phoneNumber(''), address('') {};
+            Person(string n, Sex s, int a, string pN, string addr) : name(n), sex(s), age(a), phoneNumber(pN), address(addr) {};
+        } per;
+        ```
+
+    - 使用using（C++11及以后加入的新特性）
+
+      - ```c++
+        using per = struct Person;
+        ```
+
+- struct结构体的构造方法
+
+  - 无参构造：`Person() : name(''), sex(FEMALE), age(0), phoneNumber(''), address('') {};`
+  - 有参构造：`Person(string n, Sex s, int a, string pN, string addr) : name(n), sex(s), age(a), phoneNumber(pN), address(addr) {};`
+
+- struct结构体的初始化
+
+  - 直接在结构体定义的时候声明变量
+
+    - ```c++
+      struct Person {
+          string name;
+          Sex sex; // male or female
+          int age;
+          string phoneNumber;
+          string address;
+      
+          Person() : name(''), sex(FEMALE), age(0), phoneNumber(''), address('') {};
+          Person(string n, Sex s, int a, string pN, string addr) : name(n), sex(s), age(a), phoneNumber(pN), address(addr) {};
+      } per;
+      ```
+
+  - 其他位置声明变量&lt;!--(当Person结构体存在无参构造方法或Person结构体只包含基本类型时，可以直接用Person()初始化)--&gt;
+
+    - 兼容C: `struct Person person = struct Person()`
+    - C++特性: `Person person = Person()`
+
+
+
+#### 查询界面展示
+
+输出提示，获取用户输入的选项，用户输入作为循环跳出条件（`swicth-case`处理各种情况）
+
+代码如下：
+
+```c++
+	while (true) {
+        cout &lt;&lt; '********请选择功能: ********' &lt;&lt; endl;
+        // 1. 创建通讯录(包括姓名,性别,年龄,联系电话,家庭住址)
+        cout &lt;&lt; '******* 1.创建联系人 *******' &lt;&lt; endl;
+        // 2. 显示通讯录(显示通讯录成员的基本信息)
+        cout &lt;&lt; '******* 2.显示通讯录 *******' &lt;&lt; endl;
+        // 3. 删除通讯录(删除通讯录中想删除的联系人)
+        cout &lt;&lt; '******* 3.删除联系人 *******' &lt;&lt; endl;
+        // 4. 查找通讯录(按照联系人的名字查找到具体的联系人)
+        cout &lt;&lt; '******* 4.查找联系人 *******' &lt;&lt; endl;
+        // 5. 修改通讯录(修改通讯录中联系人的基本信息)
+        cout &lt;&lt; '******* 5.修改联系人 *******' &lt;&lt; endl;
+        // 6. 清空通讯录(删除通讯录中的所有联系人)
+        cout &lt;&lt; '******* 6.清空通讯录 *******' &lt;&lt; endl;
+        // 0. 退出通讯录(退出通讯录界面)
+        cout &lt;&lt; '******* 0.退出通讯录 *******' &lt;&lt; endl;
+        int choice;
+        cin &gt;&gt; choice;
+        switch (choice) {
+            case 0:
+                cout &lt;&lt; '已退出通讯录系统' &lt;&lt; endl;
+                return 0;
+            case 1:
+                // 增加联系人
+                addContact(contact);
+                break;
+            case 2:
+                showContact(contact);
+                break;
+            case 3:
+                deleteContact(contact);
+                break;
+            case 4:
+                searchContact(contact);
+                break;
+            case 5:
+                modifyContact(contact);
+                break;
+            case 6:
+                clearContact(contact);
+                break;
+            default:
+                cout &lt;&lt; '选项不在功能内! 请重新选择' &lt;&lt; endl;
+                break;
+        }
+    }
+```
+
+
+
+#### 增删查改
+
+对通讯录的管理可概括为增删查改功能，可采用以下两种数据结构实现
+
+- 数组：
+  - 优点：查找效率高
+  - 缺点：删除效率低（后续元素都受到影响），容量固定
+- 链表：
+  - 优点：删除效率高（改变指针链接即可），容量不限，更灵活
+  - 缺点：查找效率低
+
+
+
+##### 数组实现的代码（完整版）：
+
+```c++
+#include &lt;iostream&gt;
+using namespace std;
+
+enum Sex{
+    MALE,
+    FEMALE
+};
+
+struct Person {
+    string name;
+    Sex sex; // male or female
+    int age;
+    string phoneNumber;
+    string address;
+
+    Person() : name(''), sex(FEMALE), age(0), phoneNumber(''), address('') {};
+    Person(string n, Sex s, int a, string pN, string addr) : name(n), sex(s), age(a), phoneNumber(pN), address(addr) {};
+};
+
+// 数组存储
+struct Contact
+{
+    struct Person person[1000];
+    int cnt; // 存储通讯录中当前联系人数量
+
+    Contact() : cnt(0) {};
+};
+
+
+int addContact(Contact&amp; contact) {
+    if (contact.cnt &gt;= 1000) {
+        cout &lt;&lt; '通讯录已满，无法继续存储' &lt;&lt; endl;
+        return 0;
+    }
+    string name;
+    cout &lt;&lt; '请输入新增联系人姓名' &lt;&lt; endl;
+    cin &gt;&gt; name;
+    int sex;
+    cout &lt;&lt; '请输入新增联系人性别(0表示男性, 1表示女性)' &lt;&lt; endl;
+    cin &gt;&gt; sex;
+    while (sex != 0 &amp;&amp; sex != 1) {
+        cout &lt;&lt; '输入不符合要求，请重新输入！' &lt;&lt; endl;
+        cin &gt;&gt; sex;
+    }
+    int age;
+    cout &lt;&lt; '请输入新增联系人年龄' &lt;&lt; endl;
+    cin &gt;&gt; age;
+    string phoneNumber;
+    cout &lt;&lt; '请输入新增联系人联系电话' &lt;&lt; endl;
+    cin &gt;&gt; phoneNumber;
+    string address;
+    cout &lt;&lt; '请输入新增联系人家庭住址' &lt;&lt; endl;
+    cin &gt;&gt; address;
+    Person person(name, static_cast&lt;Sex&gt;(sex), age, phoneNumber, address);
+    contact.person[contact.cnt] = person;
+    contact.cnt++;
+    return 1;
+}
+
+int showContact(Contact&amp; contact) {
+    cout &lt;&lt; '通讯录列表如下:' &lt;&lt; endl;
+    for (int i = 0; i &lt; contact.cnt; i++) {
+        cout &lt;&lt; '********************************' &lt;&lt; endl;
+        cout &lt;&lt; '第' &lt;&lt; i + 1 &lt;&lt; '个联系人:' &lt;&lt; endl;
+        cout &lt;&lt; '姓名' &lt;&lt; contact.person[i].name &lt;&lt; endl;
+        cout &lt;&lt; '性别' &lt;&lt; contact.person[i].sex &lt;&lt; endl;
+        cout &lt;&lt; '年龄' &lt;&lt; contact.person[i].age &lt;&lt; endl;
+        cout &lt;&lt; '联系电话' &lt;&lt; contact.person[i].phoneNumber &lt;&lt; endl;
+        cout &lt;&lt; '家庭住址' &lt;&lt; contact.person[i].address &lt;&lt; endl;
+    }
+    return 1;
+}
+
+int deleteContact(Contact&amp; contact) {
+    cout &lt;&lt; '请输入你想删除的联系人姓名: ' &lt;&lt; endl;
+    string name;
+    cin &gt;&gt; name;
+    for (int i = 0; i &lt; contact.cnt; i++) {
+        if (contact.person[i].name == name) {
+            for (int j = i + 1; j &lt; contact.cnt; j++) {
+                contact.person[j-1] = contact.person[j];
+            }
+            contact.cnt--;
+            return 1;
+        }
+    }
+    cout &lt;&lt; '未查找到该联系人' &lt;&lt; endl;
+    return 0;
+}
+
+int searchContact(Contact &amp;contact) {
+    cout &lt;&lt; '请输入你想查找的联系人姓名: ' &lt;&lt; endl;
+    string name;
+    cin &gt;&gt; name;
+    for (const Person&amp; person : contact.person) {
+        if (person.name == name) {
+            cout &lt;&lt; '姓名' &lt;&lt; person.name &lt;&lt; endl;
+            cout &lt;&lt; '性别' &lt;&lt; person.sex &lt;&lt; endl;
+            cout &lt;&lt; '年龄' &lt;&lt; person.age &lt;&lt; endl;
+            cout &lt;&lt; '联系电话' &lt;&lt; person.phoneNumber &lt;&lt; endl;
+            cout &lt;&lt; '家庭住址' &lt;&lt; person.address &lt;&lt; endl;
+            return 1;
+        }
+    }
+    cout &lt;&lt; '未查找到该联系人' &lt;&lt; endl;
+    return 0;
+}
+
+int modifyContact(Contact&amp; contact) {
+    cout &lt;&lt; '请输入你想修改的联系人姓名: ' &lt;&lt; endl;
+    string name;
+    cin &gt;&gt; name;
+    for (Person &amp; person : contact.person) {
+        if (person.name == name) {
+            int sex, age;
+            string phoneNumber, address;
+            cout &lt;&lt; '请输入修改后的联系人性别(0表示男性, 1表示女性)' &lt;&lt; endl;
+            cin &gt;&gt; sex;
+            while (sex != 0 &amp;&amp; sex != 1) {
+                cout &lt;&lt; '输入不符合要求，请重新输入！' &lt;&lt; endl;
+                cin &gt;&gt; sex;
+            }
+            cout &lt;&lt; '请输入修改后的联系人年龄' &lt;&lt; endl;
+            cin &gt;&gt; age;
+            cout &lt;&lt; '请输入修改后的联系人联系电话' &lt;&lt; endl;
+            cin &gt;&gt; phoneNumber;
+            cout &lt;&lt; '请输入修改后的联系人家庭住址' &lt;&lt; endl;
+            cin &gt;&gt; address;
+            person.sex = static_cast&lt;Sex&gt;(sex);
+            person.age = age;
+            person.phoneNumber = phoneNumber;
+            person.address = address;
+            cout &lt;&lt; '修改成功' &lt;&lt; endl;
+            return 1;
+        }
+    }
+    cout &lt;&lt; '未查找到该联系人' &lt;&lt; endl;
+    return 0;
+}
+
+int clearContact(Contact&amp; contact) {
+    contact.cnt = 0;
+    cout &lt;&lt; '通讯录已清空' &lt;&lt; endl;
+    return 1;
+}
+
+int main()
+{
+    cout &lt;&lt; '****欢迎来到通讯录管理系统****' &lt;&lt; endl;
+    Contact contact;
+    contact.cnt = 0;
+    while (true) {
+        cout &lt;&lt; '********请选择功能: ********' &lt;&lt; endl;
+        // 1. 创建通讯录(包括姓名,性别,年龄,联系电话,家庭住址)
+        cout &lt;&lt; '******* 1.创建联系人 *******' &lt;&lt; endl;
+        // 2. 显示通讯录(显示通讯录成员的基本信息)
+        cout &lt;&lt; '******* 2.显示通讯录 *******' &lt;&lt; endl;
+        // 3. 删除通讯录(删除通讯录中想删除的联系人)
+        cout &lt;&lt; '******* 3.删除联系人 *******' &lt;&lt; endl;
+        // 4. 查找通讯录(按照联系人的名字查找到具体的联系人)
+        cout &lt;&lt; '******* 4.查找联系人 *******' &lt;&lt; endl;
+        // 5. 修改通讯录(修改通讯录中联系人的基本信息)
+        cout &lt;&lt; '******* 5.修改联系人 *******' &lt;&lt; endl;
+        // 6. 清空通讯录(删除通讯录中的所有联系人)
+        cout &lt;&lt; '******* 6.清空通讯录 *******' &lt;&lt; endl;
+        // 0. 退出通讯录(退出通讯录界面)
+        cout &lt;&lt; '******* 0.退出通讯录 *******' &lt;&lt; endl;
+        int choice;
+        cin &gt;&gt; choice;
+        switch (choice) {
+            case 0:
+                cout &lt;&lt; '已退出通讯录系统' &lt;&lt; endl;
+                return 0;
+            case 1:
+                // 增加联系人
+                addContact(contact);
+                break;
+            case 2:
+                showContact(contact);
+                break;
+            case 3:
+                deleteContact(contact);
+                break;
+            case 4:
+                searchContact(contact);
+                break;
+            case 5:
+                modifyContact(contact);
+                break;
+            case 6:
+                clearContact(contact);
+                break;
+            default:
+                cout &lt;&lt; '选项不在功能内! 请重新选择' &lt;&lt; endl;
+                break;
+        }
+    }
+}
+
+```
+
+
+
+##### 链表实现的代码（完整版）：
+
+```c++
+#include &lt;iostream&gt;
+using namespace std;
+
+enum Sex{
+    MALE,
+    FEMALE
+};
+
+struct Person {
+    string name;
+    Sex sex; // male or female
+    int age;
+    string phoneNumber;
+    string address;
+
+    Person() : name(''), sex(FEMALE), age(0), phoneNumber(''), address('') {};
+    Person(string n, Sex s, int a, string pN, string addr) : name(n), sex(s), age(a), phoneNumber(pN), address(addr) {};
+};
+
+// 链表存储
+struct Contact
+{
+    Person person;
+    Contact* next;
+
+    Contact() : person(), next(nullptr) {};
+};
+
+
+int addContact(Contact&amp; contact) {
+    string name;
+    cout &lt;&lt; '请输入新增联系人姓名' &lt;&lt; endl;
+    cin &gt;&gt; name;
+    int sex;
+    cout &lt;&lt; '请输入新增联系人性别(0表示男性, 1表示女性)' &lt;&lt; endl;
+    cin &gt;&gt; sex;
+    while (sex != 0 &amp;&amp; sex != 1) {
+        cout &lt;&lt; '输入不符合要求，请重新输入！' &lt;&lt; endl;
+        cin &gt;&gt; sex;
+    }
+    int age;
+    cout &lt;&lt; '请输入新增联系人年龄' &lt;&lt; endl;
+    cin &gt;&gt; age;
+    string phoneNumber;
+    cout &lt;&lt; '请输入新增联系人联系电话' &lt;&lt; endl;
+    cin &gt;&gt; phoneNumber;
+    string address;
+    cout &lt;&lt; '请输入新增联系人家庭住址' &lt;&lt; endl;
+    cin &gt;&gt; address;
+    Person person(name, static_cast&lt;Sex&gt;(sex), age, phoneNumber, address);
+    Contact* newContact = new Contact;
+    newContact-&gt;person = person;
+    newContact-&gt;next = nullptr;
+    Contact* p = &amp;contact;
+    while (p-&gt;next != nullptr) {
+        p = p-&gt;next;
+    }
+    p-&gt;next = newContact;
+    return 1;
+}
+
+int showContact(Contact&amp; contact) {
+    cout &lt;&lt; '通讯录列表如下:' &lt;&lt; endl;
+    Contact* p = &amp;contact;
+    p = p-&gt;next;
+    int i = 0;
+    while(p!= nullptr) {
+        cout &lt;&lt; '********************************' &lt;&lt; endl;
+        cout &lt;&lt; '第' &lt;&lt; i + 1 &lt;&lt; '个联系人:' &lt;&lt; endl;
+        cout &lt;&lt; '姓名' &lt;&lt; p-&gt;person.name &lt;&lt; endl;
+        cout &lt;&lt; '性别' &lt;&lt; p-&gt;person.sex &lt;&lt; endl;
+        cout &lt;&lt; '年龄' &lt;&lt; p-&gt;person.age &lt;&lt; endl;
+        cout &lt;&lt; '联系电话' &lt;&lt; p-&gt;person.phoneNumber &lt;&lt; endl;
+        cout &lt;&lt; '家庭住址' &lt;&lt; p-&gt;person.address &lt;&lt; endl;
+        p = p-&gt;next;
+        i++;
+    }
+    return 1;
+}
+
+int deleteContact(Contact&amp; contact) {
+    cout &lt;&lt; '请输入你想删除的联系人姓名: ' &lt;&lt; endl;
+    string name;
+    cin &gt;&gt; name;
+    Contact* p = &amp;contact;
+    while (p-&gt;next != nullptr) {
+        if (p-&gt;next-&gt;person.name == name) {
+            Contact* temp = p-&gt;next;
+            p-&gt;next = temp-&gt;next;
+            delete temp;
+            cout &lt;&lt; '删除成功' &lt;&lt; endl;
+            return 1;
+        }
+        p = p-&gt;next;
+    }
+    cout &lt;&lt; '未查找到该联系人' &lt;&lt; endl;
+    return 0;
+}
+
+int searchContact(Contact &amp;contact) {
+    cout &lt;&lt; '请输入你想查找的联系人姓名: ' &lt;&lt; endl;
+    string name;
+    cin &gt;&gt; name;
+    Contact* p = &amp;contact;
+    p = p-&gt;next;
+    while (p != nullptr) {
+        if (p-&gt;person.name == name) {
+            cout &lt;&lt; '姓名' &lt;&lt; p-&gt;person.name &lt;&lt; endl;
+            cout &lt;&lt; '性别' &lt;&lt; p-&gt;person.sex &lt;&lt; endl;
+            cout &lt;&lt; '年龄' &lt;&lt; p-&gt;person.age &lt;&lt; endl;
+            cout &lt;&lt; '联系电话' &lt;&lt; p-&gt;person.phoneNumber &lt;&lt; endl;
+            cout &lt;&lt; '家庭住址' &lt;&lt; p-&gt;person.address &lt;&lt; endl;
+            return 1;
+        }
+        p = p-&gt;next;
+    }
+    cout &lt;&lt; '未查找到该联系人' &lt;&lt; endl;
+    return 0;
+}
+
+int modifyContact(Contact&amp; contact) {
+    cout &lt;&lt; '请输入你想修改的联系人姓名: ' &lt;&lt; endl;
+    string name;
+    cin &gt;&gt; name;
+    Contact* p = &amp;contact;
+    p = p-&gt;next;
+    while (p != nullptr) {
+        if (p-&gt;person.name == name) {
+            int sex, age;
+            string phoneNumber, address;
+            cout &lt;&lt; '请输入修改后的联系人性别(0表示男性, 1表示女性)' &lt;&lt; endl;
+            cin &gt;&gt; sex;
+            while (sex != 0 &amp;&amp; sex != 1) {
+                cout &lt;&lt; '输入不符合要求，请重新输入！' &lt;&lt; endl;
+                cin &gt;&gt; sex;
+            }
+            cout &lt;&lt; '请输入修改后的联系人年龄' &lt;&lt; endl;
+            cin &gt;&gt; age;
+            cout &lt;&lt; '请输入修改后的联系人联系电话' &lt;&lt; endl;
+            cin &gt;&gt; phoneNumber;
+            cout &lt;&lt; '请输入修改后的联系人家庭住址' &lt;&lt; endl;
+            cin &gt;&gt; address;
+            p-&gt;person.sex = static_cast&lt;Sex&gt;(sex);
+            p-&gt;person.age = age;
+            p-&gt;person.phoneNumber = phoneNumber;
+            p-&gt;person.address = address;
+            cout &lt;&lt; '修改成功' &lt;&lt; endl;
+            return 1;
+        }
+        p = p-&gt;next;
+    }
+    cout &lt;&lt; '未查找到该联系人' &lt;&lt; endl;
+    return 0;
+}
+
+int clearContact(Contact&amp; contact) {
+    contact.next = nullptr;
+    cout &lt;&lt; '通讯录已清空' &lt;&lt; endl;
+    return 1;
+}
+
+int main()
+{
+    cout &lt;&lt; '****欢迎来到通讯录管理系统****' &lt;&lt; endl;
+    Contact contact;
+    while (true) {
+        cout &lt;&lt; '********请选择功能: ********' &lt;&lt; endl;
+        // 1. 创建通讯录(包括姓名,性别,年龄,联系电话,家庭住址)
+        cout &lt;&lt; '******* 1.创建联系人 *******' &lt;&lt; endl;
+        // 2. 显示通讯录(显示通讯录成员的基本信息)
+        cout &lt;&lt; '******* 2.显示通讯录 *******' &lt;&lt; endl;
+        // 3. 删除通讯录(删除通讯录中想删除的联系人)
+        cout &lt;&lt; '******* 3.删除联系人 *******' &lt;&lt; endl;
+        // 4. 查找通讯录(按照联系人的名字查找到具体的联系人)
+        cout &lt;&lt; '******* 4.查找联系人 *******' &lt;&lt; endl;
+        // 5. 修改通讯录(修改通讯录中联系人的基本信息)
+        cout &lt;&lt; '******* 5.修改联系人 *******' &lt;&lt; endl;
+        // 6. 清空通讯录(删除通讯录中的所有联系人)
+        cout &lt;&lt; '******* 6.清空通讯录 *******' &lt;&lt; endl;
+        // 0. 退出通讯录(退出通讯录界面)
+        cout &lt;&lt; '******* 0.退出通讯录 *******' &lt;&lt; endl;
+        int choice;
+        cin &gt;&gt; choice;
+        switch (choice) {
+            case 0:
+                cout &lt;&lt; '已退出通讯录系统' &lt;&lt; endl;
+                return 0;
+            case 1:
+                // 增加联系人
+                addContact(contact);
+                break;
+            case 2:
+                showContact(contact);
+                break;
+            case 3:
+                deleteContact(contact);
+                break;
+            case 4:
+                searchContact(contact);
+                break;
+            case 5:
+                modifyContact(contact);
+                break;
+            case 6:
+                clearContact(contact);
+                break;
+            default:
+                cout &lt;&lt; '选项不在功能内! 请重新选择' &lt;&lt; endl;
+                break;
+        }
+    }
+}
+```。</description><guid isPermaLink="true">https://idontknowoman.github.io/fang.github.io/post/C%2B%2B-shi-xian-tong-xun-lu-guan-li-xi-tong.html</guid><pubDate>Fri, 13 Dec 2024 05:48:09 +0000</pubDate></item><item><title>C++实现一个简易计算器</title><link>https://idontknowoman.github.io/fang.github.io/post/C%2B%2B-shi-xian-yi-ge-jian-yi-ji-suan-qi.html</link><description>用C++实现一个简易计算器，实现小数的加减乘除计算的基本功能&#13;
 #### 考察知识点：&#13;
 - 输入输出&#13;
 - 栈&#13;
